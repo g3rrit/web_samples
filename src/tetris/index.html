@@ -57,35 +57,37 @@
         <th>Score</th>
         <th>Level</th>
       </tr>
-
-      <tr>
-        <td>1</td>
-        <td>CLEMAN</td>
-        <td>162203</td>
-        <td>12</td>
-      </tr>
-
-      <tr>
-        <td>2</td>
-        <td>ISTVAN</td>
-        <td>127988</td>
-        <td>8</td>
-      </tr>
-
-      <tr>
-        <td>3</td>
-        <td>PEAR</td>
-        <td>078422</td>
-        <td>8</td>
-      </tr>
-
-
     </table>
     </div>
 
     <script>
 
       'use strict';
+
+      function create_table() {
+          let xobj = new XMLHttpRequest();
+          xobj.overrideMimeType("application/json");
+          xobj.open("GET", "data.json", true);
+          xobj.onreadystatechange = function() {
+              if(xobj.readyState == 4 && xobj.status == 200) {
+                  let tdata = JSON.parse(xobj.responseText);
+                  let table = document.getElementById("score_board");
+                  for(let i = 0; i < tdata.length; i++) {
+                      let tr = table.insertRow(-1);
+                      let tab_cell = tr.insertCell(-1);
+                      tab_cell.innerHTML = i.toString();
+                      tab_cell = tr.insertCell(-1);
+                      tab_cell.innerHTML = tdata[i]["name"];
+                      tab_cell = tr.insertCell(-1);
+                      tab_cell.innerHTML = tdata[i]["score"].toString();
+                      tab_cell = tr.insertCell(-1);
+                      tab_cell.innerHTML = tdata[i]["lvl"].toString();
+                  }
+              }
+          };
+          xobj.send(null);
+      }
+      create_table();
 
       var tetrominos = [{
           // box
